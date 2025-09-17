@@ -1,3 +1,3 @@
 ## Getting Started
 
-Download Godot v4.4.1.stable.official [49a5bc7b6]
+Download Godot v4.5.stable.official [876b29033]
