@@ -1,7 +1,7 @@
 ### Implementation details and guides
 * **[Getting Started](./docs/1-getting-started.md)**
 * **[OS Control Flow and System Calls](./docs/2-os-control-flow.md)**
-* **[Creating software](./docs/3-making-applications)**
+* **[Creating software](./docs/3-making-applications.md)**
 
 ### Classes
 #### General utilities/classes
