@@ -1,5 +1,5 @@
 ### `Application.gd` reference
-*extends Control*
+*extends [Control](https://docs.godotengine.org/en/stable/classes/class_control.html)*
 
 `Application` is a general-purpose class that is inherited by software on the desktop. It handles a lot of directing user input on the desktop, as well as the focus mechanics of control nodes. By default, inheriting this class will handle a lot of that functionality for you, as well as other mechanics such as making system calls, and updating the window's theme.
 
@@ -21,7 +21,8 @@ Tracks if we are interacting at all with this application. Signals in `_ready()`
 
 #### Function reference
 ##### `_ready()`
-Sets up signals for when this window gets focus, or any of the other children in the application. These objects are connected to `_on_focus_gained` and `_on_focus_exited`, which handle some visual display elements of the window to show the user if the current application is the selected one or not. A signal is also connected for the OS window theme changing that `Application` handles.
+Sets up signals for when this window or any of the other children in the application gets focus. These objects are connected to `_on_focus_gained()` and `_on_focus_exited()`, which handle some visual display elements of the window to show the user if the current application is the selected one or not. A signal is also connected for the OS window theme changing that `Application` handles.
+> **NOTE:** If inheriting `Application`, call `super()` in that scripts `_ready()` function!
 
 ##### `_on_focus_gained()`
 Updates `interacting` and calls `window.on_focus_exit()`.
@@ -33,4 +34,4 @@ Checks if any of the nodes in this application have focus. If not, sets `interac
 Helper method that returns an array of all the nodes that are children of this `Application`.
 
 ##### `update_theme()`
-Updates the window's theme by instantiating a new one based on the global OS theme, copying over the current window's properties, copying over its focus state, and reparenting itself to the new window and freeing the old one. It also connects the new window to the connected TaskbarApplication object.
+Updates the window's theme by instantiating a new one based on the global OS theme, copying over the current window's properties, copying over its focus state, and reparenting itself to the new window and freeing the old one. It also connects the new window to the connected `TaskbarApplication` object.
