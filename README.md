@@ -16,5 +16,11 @@
 * **[File.gd](./docs/classes/file.md)**
 * **[FileIcon.gd](./docs/classes/fileicon.md)**
 * **[DesktopElement.gd](./docs/classes/desktopelement.md)**
+* **[StateMachine.gd](./docs/classes/statemachine.md)**
+
+#### Mouse input
+* **[Mouse.gd](./docs/classes/mouse/mouse.md)**
+* **[MouseStateMachine.gd](./docs/classes/mouse/mousestatemachine.md)**
+* **[MouseTrail.gd](./docs/classes/mouse/mousetrail.md)**
 
 Last updated: 9/19/2025
