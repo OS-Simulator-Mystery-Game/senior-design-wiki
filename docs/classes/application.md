@@ -22,7 +22,7 @@ Tracks if we are interacting at all with this application. Signals in `_ready()`
 #### Function reference
 ##### `_ready()`
 Sets up signals for when this window or any of the other children in the application gets focus. These objects are connected to `_on_focus_gained()` and `_on_focus_exited()`, which handle some visual display elements of the window to show the user if the current application is the selected one or not. A signal is also connected for the OS window theme changing that `Application` handles.
-> **NOTE:** If inheriting `Application`, call `super()` in that scripts `_ready()` function!
+> **NOTE:** If inheriting `Application`, call `super()` in that script's `_ready()` function!
 
 ##### `_on_focus_gained()`
 Updates `interacting` and calls `window.on_focus_exit()`.
