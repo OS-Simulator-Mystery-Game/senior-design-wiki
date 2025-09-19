@@ -113,13 +113,13 @@ Returns an array of strings corresponding to the `help` terminal command based o
 Sends a provided message to all terminals in the `debug_terminals` array and the original sender.
 
 ##### `issue_command(command : SystemCommand)`
-Adds a provided SystemCommand to the queue by appending it to the array. Wrapper to make code more readable when issuing system commands to the OSManager.
+Adds a provided `SystemCommand` to the queue by appending it to the `system_commands` array. Wrapper to make code more readable when issuing system commands to `OSManager`.
 
 ##### `toggle_window_pin(window : ApplicationWindow, caller = null)`
 Adds or removes the provided `ApplicationWindow` to or from the desktop's pinned window list (moving it to the top of all windows in the process), and updates the window's pin button (should later be changed to a `TextureButton` that toggles tbh). Returns instantly if it is a `SystemMessage` since `SystemMessage`s have their own window list.
 
 ##### `send_system_message(type : SystemMessage.MESSAGE_TYPES, msg : String, caller = null)`
-Creates a system dialog of the specified type (unimplemented) displaying the provided message from some caller that renders on top of all other windows.
+Creates a system dialog of the specified type (types are unimplemented) displaying the provided message from some caller that renders on top of all other windows.
 
 ##### `rename_file()`
 Unimplemented.
