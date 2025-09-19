@@ -12,5 +12,7 @@
 * **[DesktopManager.gd](./docs/classes/desktopmanager.md)**
 * **[Application.gd](./docs/classes/application.md)**
 * **[ApplicationWindow.gd](./docs/classes/applicationwindow.md)**
+* **[File.gd](./docs/classes/file.md)**
+* **[FileIcon.gd](./docs/classes/fileicon.md)**
 
-Last updated: 9/18/2025
+Last updated: 9/19/2025
