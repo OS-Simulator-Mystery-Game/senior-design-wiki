@@ -5,7 +5,9 @@
 
 ### Classes
 #### Global scripts
+* **[GameGlobals.gd](./docs/globals/gameglobals.md)**
 * **[OSManager.gd](./docs/globals/osmanager.md)**
+
 #### General utilities/classes
 * **[DesktopManager.gd](./docs/classes/desktopmanager.md)**
 * **[Application.gd](./docs/classes/application.md)**
