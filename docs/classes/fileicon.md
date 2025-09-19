@@ -30,4 +30,4 @@ Sets up all of the properties for this `FileIcon` by linking `sys_file` to `File
 Creates and issues a `SystemCommand` to open this `FileIcon`'s corresponding `File` object.
 
 ##### `grab_tooltip_text()`
-Returns this `FileIcon`'s corresponding `tooltip` inherited from `DesktopElement`.
+Returns this `FileIcon`'s corresponding `tooltip` inherited from `DesktopElement`, using its filename (`text`) as a fallback if `tooltip_text` is empty.
