@@ -13,10 +13,16 @@
 * **[DesktopManager.gd](./docs/classes/desktopmanager.md)**
 * **[Application.gd](./docs/classes/application.md)**
 * **[ApplicationWindow.gd](./docs/classes/applicationwindow.md)**
+* **[TaskbarApplication.gd](./docs/classes/taskbarapplication.md)**
 * **[File.gd](./docs/classes/file.md)**
 * **[FileIcon.gd](./docs/classes/fileicon.md)**
 * **[DesktopElement.gd](./docs/classes/desktopelement.md)**
 * **[StateMachine.gd](./docs/classes/statemachine.md)**
+
+#### Application-specific classes
+* **System Messages**
+* **Terminal**
+* **Image Viewer**
 
 #### Mouse input
 * **[Mouse.gd](./docs/classes/mouse/mouse.md)**

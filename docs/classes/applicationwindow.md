@@ -99,3 +99,61 @@ Variable used to save the window's position before minimizing it, and when repla
 
 #### Function reference
 ##### `_ready()`
+Sets up a lot of signals so buttons in the window have functionality, also adding a little bit of initial window wobble and fading the window in for a brief moment based on `fade_length`.
+
+##### `_process()`
+Sizes the shader overlays, determines when we should make a trail and updates `trail_frame_delay_win` in  `OSManager` based on the `trail_lifetime_win` and `num_trails_win`. Also decays the window wobble effect if there is any distortion.
+
+##### `close_application()`
+Issues a command to `OSManager` to close this window. Also lets the mouse's `MouseStateMachine` that we are no longer resizing this window if we were before.
+
+##### `toggle_minimize()`
+Issues a command to `OSManager` to toggle this window's minimized state.
+
+##### `_mouse_entered_title()`
+Sets `title_hovering` to `true`. Used to track if we are able to drag the window around by the title bar.
+
+##### `_mouse_exited_title()`
+Sets `title_hovering` to `false`. Used to track if we are able to drag the window around by the title bar.
+
+##### `save_size()`
+Sets `cached_size` and `cached_pos` to the window's current size and position.
+
+##### `_input()`
+Determines if we are resizing or dragging based on the values of `resizing`/`dragging` and the current mouse input/position. Resizes itself if we are resizing, or moves itself if we are dragging.
+
+##### `_on_focus_enter()`
+Moves this window to the top and modifies its appearance slightly to show it has focus.
+
+##### `_on_focus_exit()`
+Modifies this window's appearance slightly to show it no longer has focus.
+
+##### `_mouse_entered()`
+Sets `hovering` to `true`.
+
+##### `_mouse_exited()`
+Sets `hovering` to `false`.
+
+##### `check_mouse_in_resize_bounds()`
+Determines if the mouse is within the resize margin to resize the bounds of the window, and if so, updates the mouse's `MouseStateMachine` so the correct cursor is displayed. Otherwise, it updates `MouseStateMachine` to let it know the mouse is no longer in the resize bounds for this window.
+
+##### `update_trails()`
+Callback for when a trail is freed to decrement `trail_count` by 1.
+
+##### `create_trail()`
+Duplicates itself, disabling the duplicate from processing anything and tweening the value of `dither_overlay`'s `progress` in order to fade it out before freeing it.
+
+##### `size_overlays()`
+Sizes, sets the layering of, and positions `dither_overlay` and `wobbly_window_overlay` so the window appears as it normally would without these shaders (the setup for it to work is complicted don't worry about it).
+
+##### `move_to_top()`
+Moves itself to the top of the windows based on the group it is in (if it is pinned, a system window, or neither). Pinned windows always appear on top of regular windows, and system windows always appear on top of everything.
+
+##### `toggle_pin_window()`
+Issues a `SystemCommand` to `OSManager` to toggle this window's pinned state.
+
+##### `disable_pinning()`
+Hides `pin_button` so it cannot be pressed.
+
+##### `disable_minimizing()`
+Hides `minimize_button` so it cannot be pressed.
