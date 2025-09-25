@@ -8,7 +8,7 @@ Github link [here](https://github.com/OS-Simulator-Mystery-Game/senior-design)
 
 Using HTTPS run: 
     
-    `git clone https://github.com/OS-Simulator-Mystery-Game/senior-design.git`
+    git clone https://github.com/OS-Simulator-Mystery-Game/senior-design.git
 
 ### Setup git hooks
 
@@ -18,4 +18,4 @@ Currently, these git hooks will automatically prepend your commit messages with 
 
 From the main repository directory run the following command:
 
-    `git config core.hooksPath .githooks`
+    git config core.hooksPath .githooks
