@@ -16,6 +16,11 @@ Currently, these git hooks will automatically prepend your commit messages with 
 
 > NOTE: this command is telling git to use the .githooks directory in the `senior-design` repo rather than your current local githooks directory. If you have any existing local githooks they will no longer work.
 
-From the main repository directory run the following command:
+First, make the file executable:
+
+    cd .githooks
+    chmod +x prepare-commit-msg
+
+From the **main repository directory** (run `cd ..`) run the following command:
 
     git config core.hooksPath .githooks
