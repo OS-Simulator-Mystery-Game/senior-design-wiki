@@ -1,5 +1,7 @@
 ### Page Markdown Guide
 
+> Quick note: Make sure to go to your settings and add the file extensions! Go to Godot>Editor settings>Docks>FileSystem and add `.ntml` (to be changed) and `.sds` to the TextFile line. Don't include the dots, and make sure to separate the extensions by commas!
+
 #### Tags/elements
 The following tags are mandatory in any markup file, and are important in properly structuring the page:
 - `<ntml>` (to be updated): Denotes the start of a new page file. Doesn't accept styling in its opening tag.
@@ -45,7 +47,7 @@ To create a new file, you need to start with the following document setup:
 </>
 ```
 
-From there, feel free to adjust the metadata in `<head>` and add child elements to `<page>`!
+From there, feel free to adjust the metadata in `<head>` and add child elements to `<page>`! Page files are saved with the extension `.ntml` (to be changed).
 
 #### Element properties
 Element properties are crucial to having a hip webpage! Properties can be added by simply adding them in the format `[PROPERTY_NAME]=[VALUE]` after the tag type in the opening tag. The following properties are able to be used for styling elements, with some affecting only particular elements.
@@ -121,7 +123,8 @@ The following tags set page metadata:
 #### Formatting classes
 Classes are easy to make with DecoScript! You can make one in the following format:
 
-```<class="\[YOUR CLASS NAME HERE]\">
+```
+<class="\[YOUR CLASS NAME HERE]\">
     [properties here]
 </>
 ```
@@ -131,3 +134,5 @@ Properties inside of classes are specified in the following format:
 ```<[PROPERTY_NAME]=[VALUE]>```
 
 You can include as many classes as you want, and properties that apply to different kinds of elements can be applied in the same class safely!
+
+Class files are saved with the extension `.sds`.
