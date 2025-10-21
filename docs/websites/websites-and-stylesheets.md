@@ -58,7 +58,7 @@ Element properties are crucial to having a hip webpage! Properties can be added 
 - `clicked`: Sets the class to be used for the element when it is clicked. Requires quotes around the class name.
 - `size`: Sets the size of the page element on the page. Specified by 2 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px`)
 - `position`: Sets the position of the element on the page, as well as the z-index of this element to define layering. Only works in `anchored` or `absolute` positioning modes. Specified by 3 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px5px`)
-- `display`: Determines how an image positions itself on a page. Set to `flow`, `anchored`, or `absolute`.
+- `display`: Determines how an image positions itself on a page. Set to `flow`, `anchored`, or `absolute`. `Anchored` elements move with the page, but are not automatically aligned inside of its parent. `Absolute` elements stay on the same position on the page no matter how it is scrolled by the user (good for navigation bars).
 - `margin`: Sets the margins of this element. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top margin, the second to the left margin, the third to the right margin, and the fourth to the bottom margin. (ex. `size=10px10px10px10px`)
 - `padding`: Sets the padding of the element. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top padding amount, the second to the left padding amount, the third to the right padding amount, and the fourth to the bottom padding amount. (ex. `size=10px10px10px10px`)
 - `bg_color`: Sets the background color of the element. Set to a hex code prefixed by a `#`. Opacity is supported in the hex code.
@@ -89,9 +89,9 @@ Element properties are crucial to having a hip webpage! Properties can be added 
 - `flip_y`: Flips the image on the y-axis if `true`. Set to `true` or `false`.
 - `autoplay`: Determines if the video plays as soon as it loads on the page. Set to `true` or `false`.
 - `controls_enabled`: Determines if the visitor can scrub or adjust the volume of the video on the page. Set to `true` or `false`.
-- `type`: Determines the type of input element
+- `type`: Determines the type of input element. Set to `text`, `password`, `number`, `slider`, `checkbox`, `dropdown`, `upload`, or `button`.
 - `range`: Determines the maximum and minimum values of a slider's range. Specified by 2 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px`)
-- `prechecked`: Specifies if a "tickbox" `input` element is already checked or not.
+- `prechecked`: Specifies if a "tickbox" `input` element is already checked or not. Set to `true` or `false`.
 - `ordered`: Specifies if the `list` element's bullets are ordered or not. Set to `true` or `false`.
 - `horizontal_items`: Specifies the amount of horizontal elements to display in a `list` element. Specified by an integer greater than or equal to 1.
 - `items`: Specifies the items displayed in a "dropdown" `input` element. Enter a string surrounded by quotes, with items separated by commas.
