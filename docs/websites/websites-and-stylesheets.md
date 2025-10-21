@@ -61,15 +61,15 @@ Element properties are crucial to having a hip webpage! Properties can be added 
 - `display`: Determines how an image positions itself on a page. Set to `flow`, `anchored`, or `absolute`. `Anchored` elements move with the page, but are not automatically aligned inside of its parent. `Absolute` elements stay on the same position on the page no matter how it is scrolled by the user (good for navigation bars).
 - `margin`: Sets the margins of this element. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top margin, the second to the left margin, the third to the right margin, and the fourth to the bottom margin. (ex. `size=10px10px10px10px`)
 - `padding`: Sets the padding of the element. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top padding amount, the second to the left padding amount, the third to the right padding amount, and the fourth to the bottom padding amount. (ex. `size=10px10px10px10px`)
-- `bg_color`: Sets the background color of the element. Set to a hex code prefixed by a `#`. Opacity is supported in the hex code.
+- `bg_color`: Sets the background color of the element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `corner_size`: Sets the rounding radius of the corners of the element's background. Does not affect image backgrounds. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top left corner radius, the second to the top right corner radius, the third to the bottom left corner radius, and the fourth to the bottom right corner radius. (ex. `size=10px10px10px10px`)
 - `shadow`: Enables or disables a shadow effect on the element. Set to `true` or `false`.
-- `shadow_color`: Sets the shadow color for the page element. Set to a hex code prefixed by a `#`. Opacity is supported in the hex code.
+- `shadow_color`: Sets the shadow color for the page element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `shadow_size`: Sets the shadow size for the page element. Specified by a non-negative integer followed by "px".
 - `shadow_offset`: Sets the shadow offset for the page element. Specified by 2 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px`)
 - `bg_image`: Specifies the path of the file to be used for the element. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
 - `bg_repeat`: Determines if an image stretches or tiles. Set to `tile` or `repeat`.
-- `border_color`: Sets the border color for the page element. Set to a hex code prefixed by a `#`. Opacity is supported in the hex code.
+- `border_color`: Sets the border color for the page element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `border_size`: Sets the thickness of the colored border for the page element. Set to a non-negative integer.
 - `border_image`: Specifies the path of the file to be used for the element's border. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
 - `border_margins`: Specifies the thickness of the image border based on the source file provided, so it can stretch and size appropriately. Specified by 4 non-negative integers followed by "px", with no spaces, with the first number correlating to the top margin, the second to the left margin, the third to the right margin, and the fourth to the bottom margin. (ex. `size=10px10px10px10px`)
@@ -78,7 +78,7 @@ Element properties are crucial to having a hip webpage! Properties can be added 
 - `text`: The default text for `text` elements to be set to. Set to a string surrounded by quotes.
 - `font`: Sets the font of the `text` element, or the bullet font for `list` elements. Available fonts are: `times`, `philosopher`, `celtica`, `goblinhand`, `wizard`, `frankenstein`, `angelica`, `electrofied`, `unispace`, `shantell`, `comic`, and `default` (system font).
 - `font_size`: Sets the font size of `text` elements. Set to an integer greater than or equal to 0.
-- `color`: Sets the font color of the `text`, `list` bullets, `span`, or `link`. Set to a hex code prefixed by a `#`. Opacity is supported in the hex code.
+- `color`: Sets the font color of the `text`, `list` bullets, `span`, or `link`. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `align`: Sets the alignment of the text inside `text` elements. Set to either `left`, `center`, or `right`.
 - `destination`: The URL to be loaded when an `image` or `link` element is clicked. Set to a string surrounded by quotes.
 - `file`: Specifies the path of the file to be used for the element. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
