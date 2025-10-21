@@ -19,8 +19,8 @@ The following tags are used for page elements and grouping:
 - `<file>`: Creates a new **File Download**. Allows visitors to download the specified file.
 - `<input>`: Creates a new **Input Element**. Can be changed to various input types with various parameters.
 - `<embed>`: Creates a new **Embed**. Can be provided with an application file in order to load it within the webpage.
-- `<span>`: Creates a new **Span**. Can be styled.
-- `<link>`: Creates a new **Link**. Can be styled, and has a `destination` property to navigate to another page.
+- `<span>`: Creates a new **Span**. Can be styled. Must be contained within a `<text>` tag.
+- `<link>`: Creates a new **Link**. Can be styled, and has a `destination` property to navigate to another page. Must be contained within a `<text>` tag.
 
 Grouping tags like `<ntml>`, `<head>`, `<body>`, `<page>`, `<box>`, and `<list>` are closed with the closing tag `</>`.
 Text tags are closed with `</>`, and the `link`s/`span`s inbetween are closed with `</>` as well. Spans and links can only be used inside of `<text>` elements. Text between the opening and closing tag is rendered on the page.
