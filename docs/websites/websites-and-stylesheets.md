@@ -6,8 +6,8 @@
 The following tags are mandatory in any markup file, and are important in properly structuring the page:
 - `<ntml>` (to be updated): Denotes the start of a new page file. Doesn't accept styling in its opening tag.
 - `<head>`: Denotes the section of the document containing site metadata like the title, description, tags, page music, and stylesheet file location. Doesn't accept styling in its opening tag.
-- `<body>`: Denotes the start of the page. Serves mainly as a background for the page's content.
-- `<page>`: Denotes the start of the page's actual content.
+- `<body>`: Denotes the start of the page. Serves mainly as a background for the page's content. Contains `<page>`.
+- `<page>`: Denotes the start of the page's actual content. Is a child of `<body>`.
 
 The following tags are used for page elements and grouping:
 - `<box>`: Creates a new **Content Box**. Helps with grouping items together.
