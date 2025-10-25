@@ -71,7 +71,7 @@ General-purpose properties (some apply only to MOST elements; some won't apply f
 - `shadow`: Enables or disables a shadow effect on the element. Set to `true` or `false`.
 - `shadow_color`: Sets the shadow color for the page element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `shadow_size`: Sets the shadow size for the page element. Specified by a non-negative integer followed by "px".
-- `shadow_offset`: Sets the shadow offset for the page element. Specified by 2 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px`)
+- `shadow_offset`: Sets the shadow offset for the page element. Specified by 2 integers followed by "px", with no spaces. (ex. `size=100px100px`)
 - `bg_image`: Specifies the path of the file to be used for the element. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
 - `bg_repeat`: Determines if an image stretches or tiles. Set to `tile` or `repeat`.
 - `border_color`: Sets the border color for the page element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
@@ -95,6 +95,11 @@ General-purpose properties (some apply only to MOST elements; some won't apply f
 	- Used on: Text blocks, lists, spans, links
 - `text_align`: Sets the alignment of the text inside `text` elements. Set to either `left`, `center`, or `right`.
 	- Used on: Text blocks
+- `text_shadow_color`: Sets the text shadow color of the `text` or `list` bullets. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
+- `text_shadow_size`: Sets the shadow size of `text` elements. Set to an integer greater than or equal to 0. (good for outlines too!)
+	- Used on: Text blocks, lists
+- `text_shadow_offset`: Sets the shadow size of `text` and `list` elements. Specified by 2 integers followed by "px", with no spaces. (ex. `size=100px100px`)
+	- Used on: Text blocks, lists
 - `destination`: The URL to be loaded when an `image` or `link` element is clicked. Set to a string surrounded by quotes.
 	- Used on: Images, links
 - `file`: Specifies the path of the file to be used for the element. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
