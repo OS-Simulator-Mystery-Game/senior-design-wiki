@@ -81,6 +81,8 @@ General-purpose properties (some apply only to MOST elements; some won't apply f
 
 > Elements from this point on only affect certain element types.
 
+- `min_size` : Determines the absolute minimum size for the page's content. Past this point, elements stop trying to scale and the page starts scrolling. Specified by 2 non-negative integers followed by "px", with no spaces. (ex. `size=100px100px`)
+	- Used on: Page Content
 - `alignment`: Determines how elements are laid out in a container element. Set to `begin`, `center`, or `end`.
 	- Used on: Page Content, Content Boxes
 - `direction`: Determines how elements are laid out in a container element. Set to `horizontal` or `vertical`.
