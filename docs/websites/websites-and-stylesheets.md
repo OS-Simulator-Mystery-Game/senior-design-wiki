@@ -74,6 +74,8 @@ General-purpose properties (some apply only to MOST elements; some won't apply f
 - `shadow_offset`: Sets the shadow offset for the page element. Specified by 2 integers followed by "px", with no spaces. (ex. `size=100px100px`)
 - `bg_image`: Specifies the path of the file to be used for the element. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
 - `bg_repeat`: Determines if an image stretches or tiles. Set to `tile` or `repeat`.
+- `bg_frames`: The amount of frames the background image contains. Set to an integer greater than or equal to 1. Used for animated backgrounds.
+- `bg_speed`: The speed the animated background plays at. Set to a float greater than or equal to 0.0.
 - `border_color`: Sets the border color for the page element. Set to a hex code prefixed by a `#` (quotes are not needed). Opacity is supported in the hex code by adding an additional 2 characters beyond the normal 6. (ex. #0fa4cf0f)
 - `border_size`: Sets the thickness of the colored border for the page element. Set to a non-negative integer.
 - `border_image`: Specifies the path of the file to be used for the element's border. Set to a relative filepath surrounded by quotes. First, the site's directory is checked, and then the user's root directory is checked for the file.
