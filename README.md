@@ -2,6 +2,7 @@
 * **[Getting Started](./docs/1-getting-started.md)**
 * **[OS Control Flow and System Calls](./docs/2-os-control-flow.md)**
 * **[Creating software](./docs/3-making-applications.md)**
+* **[Creating software](./docs/4-diagrams.md)**
 * **[Webpage Markdown Guide](./docs/websites/websites-and-stylesheets.md)**
 
 ### Classes
