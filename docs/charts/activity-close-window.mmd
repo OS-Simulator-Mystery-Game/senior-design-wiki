@@ -1,0 +1,49 @@
+---
+title: Activity Diagram - Closing an Application Window
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+%% Activity: Closing an Application Window
+
+Start([Player Clicks Close Button]):::startEnd
+
+Start --> DetectClick[ApplicationWindow detects close button click]:::process
+DetectClick --> CallCloseApp[ApplicationWindow.close_application called]:::process
+CallCloseApp --> CreateCloseCommand[Create SystemCommand with CLOSE type]:::process
+CreateCloseCommand --> IssueCommand[OSManager.issue_command called]:::process
+IssueCommand --> AddToQueue[Add to system_commands queue]:::process
+
+AddToQueue --> WaitPhysics[Wait for _physics_process]:::process
+WaitPhysics --> DequeueCommand[OSManager dequeues command]:::process
+DequeueCommand --> ExecuteCommand[SystemCommand.execute called]:::process
+
+ExecuteCommand --> CallOSClose[OSManager.close ApplicationWindow]:::process
+CallOSClose --> CacheProperties[Cache window size and position]:::process
+CacheProperties --> StartDither[Start dither dissolve shader tween]:::process
+
+StartDither --> CheckPinned{Window pinned?}:::decision
+CheckPinned -->|Yes| RemoveFromPinned[Remove from pinned_windows array]:::process
+CheckPinned -->|No| SkipPinned[Continue]:::process
+
+RemoveFromPinned --> CheckSysMsg
+SkipPinned --> CheckSysMsg{Is SystemMessage?}:::decision
+
+CheckSysMsg -->|Yes| RemoveFromSysMsgs[Remove from sys_messages array]:::process
+CheckSysMsg -->|No| SkipSysMsgs[Continue]:::process
+
+RemoveFromSysMsgs --> UpdateMouse
+SkipSysMsgs --> UpdateMouse[Update MouseStateMachine if resizing this window]:::process
+
+UpdateMouse --> RemoveTaskbar[Remove linked TaskbarApplication from taskbar]:::process
+RemoveTaskbar --> FreeTaskbar[queue_free TaskbarApplication]:::process
+FreeTaskbar --> DecrementCount[Decrement DesktopManager.total_windows]:::process
+
+DecrementCount --> WaitDitherComplete[Wait for dither animation to complete]:::process
+WaitDitherComplete --> FreeWindow[queue_free ApplicationWindow]:::process
+FreeWindow --> SendDebugMsg[Send debug message to debug terminals]:::process
+
+SendDebugMsg --> End([Window Closed]):::startEnd

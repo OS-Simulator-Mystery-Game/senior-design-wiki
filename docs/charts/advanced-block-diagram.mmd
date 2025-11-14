@@ -1,0 +1,106 @@
+flowchart LR
+
+classDef globals fill:#ffe8cc,stroke:#cc8a00,stroke-width:1px;
+classDef commands fill:#fff2d6,stroke:#d9a404,stroke-width:1px;
+classDef framework fill:#e6f2ff,stroke:#0074d9,stroke-width:1px;
+classDef desktop fill:#eef9ff,stroke:#0d667a,stroke-width:1px;
+classDef filesystem fill:#f0e6ff,stroke:#6b36b7,stroke-width:1px;
+classDef input fill:#e8ffe8,stroke:#2b8a3e,stroke-width:1px;
+classDef resources fill:#f9f9f9,stroke:#888,stroke-width:1px;
+classDef inherit stroke-dasharray:4 3,stroke:#555,color:#222;
+
+subgraph Globals
+  OSManager[OSManager]
+  GameGlobals[GameGlobals]
+  SoundManager[SoundManager]
+end
+
+subgraph CommandQueue
+  SystemCommand[SystemCommand]
+end
+
+subgraph ApplicationFramework
+  Application[Application]
+  ApplicationWindow[ApplicationWindow]
+  StateMachine[StateMachine]
+end
+
+subgraph DesktopLayer
+  DesktopManager[DesktopManager]
+  DesktopElement[DesktopElement]
+  FileIcon[FileIcon]
+  TaskbarApplication[TaskbarApplication]
+end
+
+subgraph Filesystem
+  File[File]
+end
+
+subgraph Input_Mouse
+  Mouse[Mouse]
+  MouseStateMachine[MouseStateMachine]
+  MouseTrail[MouseTrail]
+end
+
+subgraph Resources
+  Scenes[Scenes]
+  Prefabs[Prefabs]
+  Sprites[Sprites]
+  Shaders[Shaders]
+  SFX[SFX]
+  Music[Music]
+  Fonts[Fonts]
+  Palettes[Palettes]
+  Sites[Sites / Web Pages]
+end
+
+%% Inheritance
+TaskbarApplication -.-> DesktopElement:::inherit
+FileIcon -.-> DesktopElement:::inherit
+MouseStateMachine -.-> StateMachine:::inherit
+
+%% Composition
+ApplicationWindow -->|hosts| Application
+DesktopManager -->|manages| FileIcon
+DesktopManager -->|creates| TaskbarApplication
+Mouse -->|contains| MouseStateMachine
+Mouse -->|spawns| MouseTrail
+
+%% Dependencies
+OSManager --> DesktopManager
+OSManager --> Mouse
+OSManager --> SystemCommand
+SystemCommand --> OSManager
+Application -->|issues command| OSManager
+ApplicationWindow -->|issues command| OSManager
+Application -->|window ref| ApplicationWindow
+ApplicationWindow -->|linked task| TaskbarApplication
+TaskbarApplication -->|toggles| ApplicationWindow
+FileIcon -->|represents| File
+FileIcon -->|open command| SystemCommand
+DesktopManager -->|theme / limits| OSManager
+GameGlobals --> DesktopManager
+GameGlobals --> SoundManager
+MouseStateMachine -->|resize enums| ApplicationWindow
+MouseTrail -->|theme sync| OSManager
+
+%% Resource references (dashed)
+Scenes -.-> Application
+Prefabs -.-> ApplicationWindow
+Prefabs -.-> FileIcon
+Sprites -.-> Mouse
+Shaders -.-> ApplicationWindow
+SFX -.-> GameGlobals
+Music -.-> SoundManager
+Fonts -.-> ApplicationWindow
+Palettes -.-> Shaders
+Sites -.-> Application
+File -.-> Scenes
+
+class OSManager,GameGlobals,SoundManager globals
+class SystemCommand commands
+class Application,ApplicationWindow,StateMachine framework
+class DesktopManager,DesktopElement,FileIcon,TaskbarApplication desktop
+class File filesystem
+class Mouse,MouseStateMachine,MouseTrail input
+class Scenes,Prefabs,Sprites,Shaders,SFX,Music,Fonts,Palettes,Sites resources

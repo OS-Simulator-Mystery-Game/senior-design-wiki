@@ -1,0 +1,11 @@
+flowchart LR
+OSManager[OSManager] --> DesktopManager[DesktopManager]
+OSManager --> Mouse[Mouse]
+DesktopManager --> ApplicationWindow[ApplicationWindow]
+ApplicationWindow --> Application[Application]
+DesktopManager --> FileIcon[FileIcon]
+FileIcon --> File[File]
+Application --> OSManager
+SystemCommand[SystemCommand] --> OSManager
+Mouse --> MouseStateMachine[MouseStateMachine]
+Mouse --> MouseTrail[MouseTrail]

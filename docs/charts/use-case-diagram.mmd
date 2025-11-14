@@ -1,0 +1,93 @@
+flowchart TB
+
+classDef actor fill:#e8f4f8,stroke:#0077b6,stroke-width:2px,color:#000;
+classDef usecase fill:#fff8e1,stroke:#f57c00,stroke-width:2px,shape:rounded;
+classDef system fill:#f0f0f0,stroke:#555,stroke-width:1px;
+
+%% Actors
+Player[Player / User]:::actor
+Application[Application Instance]:::actor
+Terminal[Terminal / Debug User]:::actor
+
+%% System Boundary
+subgraph OS_System[Operating System]
+  direction TB
+  
+  %% Core Use Cases
+  OpenFile((Open File)):::usecase
+  CloseWindow((Close Window)):::usecase
+  MinimizeWindow((Minimize/Maximize Window)):::usecase
+  DragWindow((Drag Window)):::usecase
+  ResizeWindow((Resize Window)):::usecase
+  PinWindow((Pin Window)):::usecase
+  ChangeTheme((Change Theme)):::usecase
+  DoubleClickIcon((Double-Click Desktop Icon)):::usecase
+  ExecuteTerminalCommand((Execute Terminal Command)):::usecase
+  BrowseFilesystem((Browse Filesystem)):::usecase
+  OrganizeDesktop((Organize Desktop Icons)):::usecase
+  DisplayTooltip((Display Tooltip)):::usecase
+  SendSystemMessage((Send System Message)):::usecase
+  IssueSystemCommand((Issue System Command)):::usecase
+  ProcessCommandQueue((Process Command Queue)):::usecase
+  ManageWindowFocus((Manage Window Focus)):::usecase
+  UpdateMouseCursor((Update Mouse Cursor)):::usecase
+  CreateMouseTrail((Create Mouse Trail)):::usecase
+  CreateWindowTrail((Create Window Trail)):::usecase
+  LoadDirectory((Load Directory)):::usecase
+  InstantiateApplication((Instantiate Application)):::usecase
+  UpdateTaskbar((Update Taskbar)):::usecase
+end
+
+%% Player interactions
+Player --> DoubleClickIcon
+Player --> DragWindow
+Player --> ResizeWindow
+Player --> MinimizeWindow
+Player --> CloseWindow
+Player --> PinWindow
+Player --> ChangeTheme
+Player --> ExecuteTerminalCommand
+Player --> BrowseFilesystem
+
+%% Application interactions
+Application --> IssueSystemCommand
+Application --> OpenFile
+Application --> SendSystemMessage
+Application --> BrowseFilesystem
+
+%% Terminal/Debug interactions
+Terminal --> ExecuteTerminalCommand
+Terminal --> IssueSystemCommand
+
+%% System internal relationships (includes/extends)
+DoubleClickIcon -.->|triggers| OpenFile
+DragWindow -.->|creates| CreateWindowTrail
+ResizeWindow -.->|creates| CreateWindowTrail
+DragWindow -.->|updates| UpdateMouseCursor
+ResizeWindow -.->|updates| UpdateMouseCursor
+Player -.->|moves mouse| UpdateMouseCursor
+UpdateMouseCursor -.->|may create| CreateMouseTrail
+IssueSystemCommand -.->|queues to| ProcessCommandQueue
+ProcessCommandQueue -.->|executes| OpenFile
+ProcessCommandQueue -.->|executes| CloseWindow
+ProcessCommandQueue -.->|executes| MinimizeWindow
+ProcessCommandQueue -.->|executes| ChangeTheme
+ProcessCommandQueue -.->|executes| PinWindow
+OpenFile -.->|may trigger| InstantiateApplication
+InstantiateApplication -.->|triggers| UpdateTaskbar
+CloseWindow -.->|triggers| UpdateTaskbar
+MinimizeWindow -.->|triggers| ManageWindowFocus
+CloseWindow -.->|triggers| ManageWindowFocus
+PinWindow -.->|affects| ManageWindowFocus
+BrowseFilesystem -.->|uses| LoadDirectory
+LoadDirectory -.->|creates| OrganizeDesktop
+Player -.->|hovers| DisplayTooltip
+
+%% Notes
+note1[System processes commands via queue]:::system
+note2[Mouse trails optional via OSManager settings]:::system
+note3[Applications extend Application base class]:::system
+
+ProcessCommandQueue -.- note1
+CreateMouseTrail -.- note2
+Application -.- note3

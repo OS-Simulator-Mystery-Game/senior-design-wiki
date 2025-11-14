@@ -1,0 +1,49 @@
+---
+title: Activity Diagram - Minimizing/Maximizing a Window
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+%% Activity: Minimizing/Maximizing a Window
+
+Start([Player Clicks Minimize Button or TaskbarApplication]):::startEnd
+
+Start --> DetectInput{Input source?}:::decision
+DetectInput -->|Minimize Button| CallToggleMin1[ApplicationWindow.toggle_minimize]:::process
+DetectInput -->|TaskbarApplication| CallToggleMin2[TaskbarApplication click handler]:::process
+
+CallToggleMin1 --> CreateCommand
+CallToggleMin2 --> CreateCommand[Create SystemCommand with MINIMIZE type]:::process
+
+CreateCommand --> IssueCommand[OSManager.issue_command called]:::process
+IssueCommand --> AddToQueue[Add to system_commands queue]:::process
+
+AddToQueue --> WaitPhysics[Wait for _physics_process]:::process
+WaitPhysics --> DequeueCommand[OSManager dequeues command]:::process
+DequeueCommand --> ExecuteCommand[SystemCommand.execute called]:::process
+
+ExecuteCommand --> CallToggle[OSManager.toggle_minimize ApplicationWindow]:::process
+CallToggle --> CacheProps[Cache current size and position]:::process
+
+CacheProps --> CheckState{Currently visible?}:::decision
+
+CheckState -->|Yes - Minimize| HideWindow[Set ApplicationWindow.visible = false]:::process
+HideWindow --> ScaleTween[Create scaling_tween to scale down]:::process
+ScaleTween --> TweenToTaskbar[Tween position toward TaskbarApplication]:::process
+TweenToTaskbar --> TweenScale[Tween scale to 0.0]:::process
+TweenScale --> UpdateTaskbarMin[Update TaskbarApplication visual to show minimized]:::process
+UpdateTaskbarMin --> EndMin([Window Minimized]):::startEnd
+
+CheckState -->|No - Maximize| RestorePos[Restore cached position]:::process
+RestorePos --> RestoreSize[Restore cached size]:::process
+RestoreSize --> SetVisible[Set ApplicationWindow.visible = true]:::process
+SetVisible --> ScaleTweenMax[Create scaling_tween to scale up]:::process
+ScaleTweenMax --> TweenFromTaskbar[Tween from TaskbarApplication position]:::process
+TweenFromTaskbar --> TweenScaleUp[Tween scale from 0.0 to 1.0]:::process
+TweenScaleUp --> GiveFocus[Give focus to ApplicationWindow]:::process
+GiveFocus --> UpdateTaskbarMax[Update TaskbarApplication visual to show active]:::process
+UpdateTaskbarMax --> MoveToTop[Move ApplicationWindow to top of window stack]:::process
+MoveToTop --> EndMax([Window Maximized]):::startEnd

@@ -1,0 +1,71 @@
+---
+title: Activity Diagram - Opening a File from Desktop Icon
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+classDef error fill:#f8d7da,stroke:#dc3545,stroke-width:2px;
+
+%% Activity: Opening a File from Desktop Icon
+
+Start([Player Double-Clicks FileIcon]):::startEnd
+
+Start --> DetectDoubleClick[FileIcon detects double-click]:::process
+DetectDoubleClick --> EmitSignal[Emit double_clicked signal]:::process
+EmitSignal --> CallOpen[FileIcon.open called]:::process
+CallOpen --> CreateCommand[Create SystemCommand with OPEN type]:::process
+CreateCommand --> QueueCommand[Issue command to OSManager.issue_command]:::process
+QueueCommand --> AddToQueue[Add SystemCommand to system_commands array]:::process
+
+AddToQueue --> WaitProcess[Wait for _physics_process]:::process
+WaitProcess --> DequeueCommand[OSManager dequeues SystemCommand]:::process
+DequeueCommand --> ExecuteCommand[SystemCommand.execute called]:::process
+
+ExecuteCommand --> ParseParams[Parse parameters: file path]:::process
+ParseParams --> GetFile[OSManager.get_file: retrieve File object]:::process
+
+GetFile --> CheckFileExists{File exists?}:::decision
+CheckFileExists -->|No| SendError[Send error message to caller]:::error
+SendError --> End1([End]):::startEnd
+
+CheckFileExists -->|Yes| DetermineType{File type?}:::decision
+
+DetermineType -->|Application Scene .tscn| LoadScene[Load scene resource]:::process
+DetermineType -->|Image| OpenImageViewer[Open Image Viewer wrapper app]:::process
+DetermineType -->|Text/Web| OpenTextViewer[Open appropriate viewer]:::process
+
+LoadScene --> CallOSManagerOpen[OSManager.open File object]:::process
+OpenImageViewer --> CallOSManagerOpen
+OpenTextViewer --> CallOSManagerOpen
+
+CallOSManagerOpen --> CheckWindowLimit{total_windows < maximum_window_count?}:::decision
+CheckWindowLimit -->|No| SendLimitError[Send window limit error]:::error
+SendLimitError --> End2([End]):::startEnd
+
+CheckWindowLimit -->|Yes| CreateAppWindow[DesktopManager.create_application]:::process
+CreateAppWindow --> IncrementCount[Increment total_windows]:::process
+IncrementCount --> InstantiateWindow[Instantiate ApplicationWindow prefab based on theme]:::process
+InstantiateWindow --> CreateTaskbar[Create TaskbarApplication]:::process
+CreateTaskbar --> LinkWindowTask[Link ApplicationWindow and TaskbarApplication]:::process
+
+LinkWindowTask --> InstantiateApp{Is application scene?}:::decision
+InstantiateApp -->|Yes| LoadAppScene[Instantiate application scene]:::process
+InstantiateApp -->|No| LoadWrapperApp[Instantiate wrapper app with file content]:::process
+
+LoadAppScene --> AddToWindow[Add Application to ApplicationWindow container]:::process
+LoadWrapperApp --> AddToWindow
+
+AddToWindow --> SetupSignals[Connect focus signals and theme signals]:::process
+SetupSignals --> FadeInWindow[Fade in ApplicationWindow with dither effect]:::process
+FadeInWindow --> GiveFocus[Give focus to ApplicationWindow]:::process
+GiveFocus --> AddToTaskbar[Add TaskbarApplication to taskbar container]:::process
+
+AddToTaskbar --> MoveToTop[ApplicationWindow.move_to_top]:::process
+MoveToTop --> SendDebugMsg[Send debug message to debug terminals]:::process
+SendDebugMsg --> End3([Application Running]):::startEnd
+
+%% Parallel activity: Desktop organization (optional)
+AddToTaskbar -.->|if desktop icon removed| OrganizeDesktop[DesktopManager.organize]:::process
+OrganizeDesktop -.-> RearrangeIcons[Rearrange remaining FileIcons in grid]:::process

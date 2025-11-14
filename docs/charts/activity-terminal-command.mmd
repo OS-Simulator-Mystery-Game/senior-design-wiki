@@ -1,0 +1,70 @@
+---
+title: Activity Diagram - Executing a Terminal Command
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+classDef error fill:#f8d7da,stroke:#dc3545,stroke-width:2px;
+
+%% Activity: Executing a Terminal Command
+
+Start([Player Types Command and Presses Enter]):::startEnd
+
+Start --> CaptureInput[Terminal captures input text]:::process
+CaptureInput --> CallParseCommand[OSManager.parse_command called with input]:::process
+CallParseCommand --> SplitTokens[Split input by spaces into tokens array]:::process
+
+SplitTokens --> CheckEmpty{Tokens array empty?}:::decision
+CheckEmpty -->|Yes| SendEmptyError[Send empty command error to Terminal]:::error
+SendEmptyError --> End1([End]):::startEnd
+
+CheckEmpty -->|No| ExtractCommand[Extract first token as command keyword]:::process
+ExtractCommand --> LookupCommand{Command exists in OSManager.commands?}:::decision
+
+LookupCommand -->|No| SendUnknownError[Send unknown command error to Terminal]:::error
+SendUnknownError --> End2([End]):::startEnd
+
+LookupCommand -->|Yes| GetCommandDef[Get command definition from dictionary]:::process
+GetCommandDef --> CheckSpecial{Is special command like help?}:::decision
+
+CheckSpecial -->|Yes - help| GenerateHelp[OSManager.get_terminal_help_strings]:::process
+GenerateHelp --> SendHelp[Send help strings to Terminal]:::process
+SendHelp --> End3([End]):::startEnd
+
+CheckSpecial -->|No - System Command| ExtractArgs[Extract remaining tokens as arguments]:::process
+ExtractArgs --> ValidateArgs{Correct number of args?}:::decision
+
+ValidateArgs -->|No| SendArgError[Send argument count error to Terminal]:::error
+SendArgError --> End4([End]):::startEnd
+
+ValidateArgs -->|Yes| GetCommandType[Get COMMAND_TYPE from definition]:::process
+GetCommandType --> CreateSystemCommand[Create SystemCommand with type and args]:::process
+CreateSystemCommand --> IssueCommand[OSManager.issue_command called]:::process
+IssueCommand --> AddToQueue[Add to system_commands queue]:::process
+
+AddToQueue --> WaitPhysics[Wait for _physics_process]:::process
+WaitPhysics --> DequeueCommand[OSManager dequeues command]:::process
+DequeueCommand --> ExecuteCommand[SystemCommand.execute called]:::process
+
+ExecuteCommand --> MatchType{Match command type}:::decision
+
+MatchType -->|OPEN| ProcessOpen[Process file path, call OSManager.open]:::process
+MatchType -->|CLOSE| ProcessClose[Process window reference, call OSManager.close]:::process
+MatchType -->|MINIMIZE| ProcessMinimize[Process window reference, call toggle_minimize]:::process
+MatchType -->|CHANGE_THEME| ProcessTheme[Process theme parameters, call update_theme]:::process
+MatchType -->|Other| ProcessOther[Execute corresponding OSManager function]:::process
+
+ProcessOpen --> SendResult
+ProcessClose --> SendResult
+ProcessMinimize --> SendResult
+ProcessTheme --> SendResult
+ProcessOther --> SendResult[Send result/confirmation to caller Terminal]:::process
+
+SendResult --> CheckDebug{Debug terminals exist?}:::decision
+CheckDebug -->|Yes| SendDebug[Send command output to all debug terminals]:::process
+CheckDebug -->|No| SkipDebug[Skip debug output]:::process
+
+SendDebug --> End5([Command Complete]):::startEnd
+SkipDebug --> End5
