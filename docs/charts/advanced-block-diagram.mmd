@@ -72,6 +72,8 @@ subgraph Diagram[" "]
     Application2 --> SystemCommand2
     ApplicationWindow2 --> Mouse2
     ApplicationWindow2 --> File2
+    ApplicationWindow2 --> SystemCommand2
+    ApplicationWindow2 --> MouseStateMachine2
     
     %% Input connections
     Mouse2 --> MouseStateMachine2
@@ -119,6 +121,6 @@ style LegendSolid stroke-dasharray:0,stroke:#333
 style LegendDotted stroke-dasharray:2 3,stroke:#333
 style LegendDashedBorder stroke-dasharray:6 4,stroke:#333
 style LegendAssetsShape stroke:#333,stroke-width:1px,fill:#fff
-%% Invisible anchor edge to force legend below; styled fully transparent
+%% Invisible anchor edge (styled transparent) to keep legend below without visible arrow
 DetailedView --> LegendBox
-linkStyle 23 stroke:transparent,opacity:0
+linkStyle 25 stroke-width:0px,stroke:transparent,fill:none,opacity:0

@@ -33,6 +33,19 @@ The system is organized into several key layers:
 
 ![Block Diagram](charts/basic-block-diagram.png)
 
+### Advanced Block Diagram
+
+This expanded diagram provides a more detailed view of class-level relationships, data/control flow, and layer boundaries. It emphasizes:
+- Invocation paths between `Application`, `ApplicationWindow`, and the `SystemCommand` queue
+- Desktop layer elements (`DesktopManager`, `FileIcon`, `TaskbarApplication`, `DesktopElement`) and their interactions
+- Mouse input flow and internal state machine composition
+- Separation of global managers from window/application framework logic
+- Resource/asset consumption (indicated via dashed borders) without cluttering the diagram with individual asset arrows
+
+Use this when you need to reason about how commands propagate, where state transitions occur, or which components depend on global services.
+
+![Advanced Block Diagram](charts/advanced-block-diagram.png)
+
 ---
 
 ## Use Case Diagram
