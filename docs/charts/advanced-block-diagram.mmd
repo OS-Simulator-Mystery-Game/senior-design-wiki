@@ -1,106 +1,124 @@
-flowchart LR
+---
+title: Advanced Block Diagram
+---
+%%{init: {'flowchart': {'nodeSpacing': 50, 'rankSpacing': 50, 'curve': 'basis'}} }%%
+flowchart TB
 
-classDef globals fill:#ffe8cc,stroke:#cc8a00,stroke-width:1px;
-classDef commands fill:#fff2d6,stroke:#d9a404,stroke-width:1px;
-classDef framework fill:#e6f2ff,stroke:#0074d9,stroke-width:1px;
-classDef desktop fill:#eef9ff,stroke:#0d667a,stroke-width:1px;
-classDef filesystem fill:#f0e6ff,stroke:#6b36b7,stroke-width:1px;
-classDef input fill:#e8ffe8,stroke:#2b8a3e,stroke-width:1px;
-classDef resources fill:#f9f9f9,stroke:#888,stroke-width:1px;
-classDef inherit stroke-dasharray:4 3,stroke:#555,color:#222;
+subgraph Diagram[" "]
+    direction TB
 
-subgraph Globals
-  OSManager[OSManager]
-  GameGlobals[GameGlobals]
-  SoundManager[SoundManager]
+    subgraph DetailedView[" Class Relationships Block Diagram "]
+        direction TB
+    
+    %% Globals Layer
+    subgraph GlobalsLayer[" Globals Layer "]
+        OSManager2["OSManager"]:::global
+        GameGlobals2["GameGlobals"]:::global
+        SoundManager2["SoundManager"]:::global
+    end
+    
+    %% Command Queue
+    SystemCommand2["SystemCommand<br/>(Command Queue)"]:::command
+    
+    %% Desktop Layer
+    subgraph DesktopLayer[" Desktop Layer "]
+        DesktopManager2["DesktopManager"]:::desktop
+        FileIcon2["FileIcon"]:::desktop
+        DesktopElement2["DesktopElement"]:::desktop
+        TaskbarApplication2["TaskbarApplication"]:::desktop
+    end
+    
+    %% Input Layer
+    subgraph InputLayer[" Input Layer "]
+        Mouse2["Mouse"]:::input
+        MouseStateMachine2["MouseStateMachine"]:::input
+        MouseTrail2["MouseTrail"]:::input
+    end
+    
+    %% Application Framework
+    subgraph AppFramework[" Application Framework "]
+        Application2["Application"]:::app
+        ApplicationWindow2["ApplicationWindow"]:::app
+    end
+    
+    %% Filesystem
+    File2["File"]:::fs
+    
+    %% StateMachine (placed separately for better layout)
+    StateMachine2["StateMachine"]:::app
+    
+    %% Assets & Resources
+    Assets2[("<b>Assets & Prefabs:</b><br/>Fonts, Sprites,<br/>Sounds, Themes")]:::assets
+    
+    %% Core Dependencies
+    OSManager2 --> SystemCommand2
+    OSManager2 --> DesktopManager2
+    OSManager2 --> GameGlobals2
+    GameGlobals2 --> SoundManager2
+    SystemCommand2 --> DesktopManager2
+    SystemCommand2 --> Application2
+    
+    %% Desktop interactions
+    DesktopManager2 --> FileIcon2
+    DesktopManager2 --> DesktopElement2
+    DesktopManager2 --> TaskbarApplication2
+    DesktopManager2 --> SystemCommand2
+    DesktopManager2 --> File2
+    FileIcon2 --> File2
+    DesktopElement2 --> File2
+    
+    %% Application interactions
+    Application2 --> ApplicationWindow2
+    Application2 --> SystemCommand2
+    ApplicationWindow2 --> Mouse2
+    ApplicationWindow2 --> File2
+    
+    %% Input connections
+    Mouse2 --> MouseStateMachine2
+    Mouse2 --> MouseTrail2
+    DesktopManager2 --> Mouse2
+    Application2 --> Mouse2
+    
+    %% Asset consumption indication (no edges)
+    %% Dashed borders mark specific nodes that consume assets
+    style DesktopManager2 stroke-dasharray: 5 5,stroke:#999
+    style Application2 stroke-dasharray: 5 5,stroke:#999
+    style ApplicationWindow2 stroke-dasharray: 5 5,stroke:#999
+    style Mouse2 stroke-dasharray: 5 5,stroke:#999
+    style File2 stroke-dasharray: 5 5,stroke:#999
+    style SoundManager2 stroke-dasharray: 5 5,stroke:#999
+    
+    %% Inheritance (dotted)
+    TaskbarApplication2 -.->|inherits| Application2
+    MouseStateMachine2 -.->|inherits| StateMachine2
+    
+    end
+
+    %% Legend (kept separate but guaranteed below by Diagram stacking)
+    subgraph LegendBox[" Legend "]
+        direction TB
+        LegendSolid["<b>Solid line</b>:<br/>dependency / method calls"]
+        LegendDotted["<b>Dotted line</b>:<br/>inheritance"]
+        LegendDashedBorder["<b>Dashed border</b>:<br/>node consumes assets<br/>(fonts, sprites,<br/>sounds, themes)"]
+        LegendAssetsShape[("<b>Cylinder node</b>:<br/>'Assets & Prefabs'<br/>global repository;<br/>edges omitted for clarity")]
+    end
 end
 
-subgraph CommandQueue
-  SystemCommand[SystemCommand]
-end
-
-subgraph ApplicationFramework
-  Application[Application]
-  ApplicationWindow[ApplicationWindow]
-  StateMachine[StateMachine]
-end
-
-subgraph DesktopLayer
-  DesktopManager[DesktopManager]
-  DesktopElement[DesktopElement]
-  FileIcon[FileIcon]
-  TaskbarApplication[TaskbarApplication]
-end
-
-subgraph Filesystem
-  File[File]
-end
-
-subgraph Input_Mouse
-  Mouse[Mouse]
-  MouseStateMachine[MouseStateMachine]
-  MouseTrail[MouseTrail]
-end
-
-subgraph Resources
-  Scenes[Scenes]
-  Prefabs[Prefabs]
-  Sprites[Sprites]
-  Shaders[Shaders]
-  SFX[SFX]
-  Music[Music]
-  Fonts[Fonts]
-  Palettes[Palettes]
-  Sites[Sites / Web Pages]
-end
-
-%% Inheritance
-TaskbarApplication -.-> DesktopElement:::inherit
-FileIcon -.-> DesktopElement:::inherit
-MouseStateMachine -.-> StateMachine:::inherit
-
-%% Composition
-ApplicationWindow -->|hosts| Application
-DesktopManager -->|manages| FileIcon
-DesktopManager -->|creates| TaskbarApplication
-Mouse -->|contains| MouseStateMachine
-Mouse -->|spawns| MouseTrail
-
-%% Dependencies
-OSManager --> DesktopManager
-OSManager --> Mouse
-OSManager --> SystemCommand
-SystemCommand --> OSManager
-Application -->|issues command| OSManager
-ApplicationWindow -->|issues command| OSManager
-Application -->|window ref| ApplicationWindow
-ApplicationWindow -->|linked task| TaskbarApplication
-TaskbarApplication -->|toggles| ApplicationWindow
-FileIcon -->|represents| File
-FileIcon -->|open command| SystemCommand
-DesktopManager -->|theme / limits| OSManager
-GameGlobals --> DesktopManager
-GameGlobals --> SoundManager
-MouseStateMachine -->|resize enums| ApplicationWindow
-MouseTrail -->|theme sync| OSManager
-
-%% Resource references (dashed)
-Scenes -.-> Application
-Prefabs -.-> ApplicationWindow
-Prefabs -.-> FileIcon
-Sprites -.-> Mouse
-Shaders -.-> ApplicationWindow
-SFX -.-> GameGlobals
-Music -.-> SoundManager
-Fonts -.-> ApplicationWindow
-Palettes -.-> Shaders
-Sites -.-> Application
-File -.-> Scenes
-
-class OSManager,GameGlobals,SoundManager globals
-class SystemCommand commands
-class Application,ApplicationWindow,StateMachine framework
-class DesktopManager,DesktopElement,FileIcon,TaskbarApplication desktop
-class File filesystem
-class Mouse,MouseStateMachine,MouseTrail input
-class Scenes,Prefabs,Sprites,Shaders,SFX,Music,Fonts,Palettes,Sites resources
+%% Style classes
+classDef global fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+classDef command fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+classDef desktop fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+classDef app fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
+classDef input fill:#fce4ec,stroke:#c2185b,stroke-width:2px;
+classDef fs fill:#fff9c4,stroke:#f9a825,stroke-width:2px;
+classDef assets fill:#f5f5f5,stroke:#757575,stroke-width:1px,stroke-dasharray: 5 5;
+ 
+style LegendBox fill:#ffffff,stroke:#555,stroke-width:1px
+style Diagram fill:#ffffff,stroke:#555,stroke-width:1px
+style LegendSolid stroke-dasharray:0,stroke:#333
+style LegendDotted stroke-dasharray:2 3,stroke:#333
+style LegendDashedBorder stroke-dasharray:6 4,stroke:#333
+style LegendAssetsShape stroke:#333,stroke-width:1px,fill:#fff
+%% Invisible anchor edge to force legend below; styled fully transparent
+DetailedView --> LegendBox
+linkStyle 23 stroke:transparent,opacity:0
