@@ -1,6 +1,6 @@
 ### Page Markdown Guide
 
-> Quick note: Make sure to go to your settings and add the file extensions! Go to Godot>Editor settings>Docks>FileSystem and add `.swml` (to be changed) and `.sds` to the TextFile line. Don't include the dots, and make sure to separate the extensions by commas!
+> Quick note: Make sure to go to your settings and add the file extensions! Go to Godot>Editor settings>Docks>FileSystem and add `.swml` and `.sds` to the TextFile line. Don't include the dots, and make sure to separate the extensions by commas!
 
 #### Tags/elements
 The following tags are mandatory in any markup file, and are important in properly structuring the page:
@@ -202,6 +202,7 @@ You can include as many classes as you want, and properties that apply to differ
 Class files are saved with the extension `.sds`.
 
 Sample stylesheet:
+
 ```
 <class="hello">
 	<color=#ffffff>
