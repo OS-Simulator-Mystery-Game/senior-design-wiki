@@ -1,10 +1,10 @@
 ### Page Markdown Guide
 
-> Quick note: Make sure to go to your settings and add the file extensions! Go to Godot>Editor settings>Docks>FileSystem and add `.ntml` (to be changed) and `.sds` to the TextFile line. Don't include the dots, and make sure to separate the extensions by commas!
+> Quick note: Make sure to go to your settings and add the file extensions! Go to Godot>Editor settings>Docks>FileSystem and add `.swml` (to be changed) and `.sds` to the TextFile line. Don't include the dots, and make sure to separate the extensions by commas!
 
 #### Tags/elements
 The following tags are mandatory in any markup file, and are important in properly structuring the page:
-- `<ntml>` (to be updated): Denotes the start of a new page file. Doesn't accept styling in its opening tag.
+- `<swml>` (to be updated): Denotes the start of a new page file. Doesn't accept styling in its opening tag.
 - `<head>`: Denotes the section of the document containing site metadata like the title, description, tags, page music, and stylesheet file location. Doesn't accept styling in its opening tag.
 - `<body>`: Denotes the start of the page. Serves mainly as a background for the page's content. Contains `<page>`.
 - `<page>`: Denotes the start of the page's actual content. Is a child of `<body>`.
@@ -22,7 +22,7 @@ The following tags are used for page elements and grouping:
 - `<span>`: Creates a new **Span**. Can be styled. Must be contained within a `<text>` tag.
 - `<link>`: Creates a new **Link**. Can be styled, and has a `destination` property to navigate to another page. Must be contained within a `<text>` tag.
 
-Grouping tags like `<ntml>`, `<head>`, `<body>`, `<page>`, `<box>`, and `<list>` are closed with the closing tag `</>`.
+Grouping tags like `<swml>`, `<head>`, `<body>`, `<page>`, `<box>`, and `<list>` are closed with the closing tag `</>`.
 Text tags are closed with `</>`, and the `link`s/`span`s inbetween are closed with `</>` as well. Spans and links can only be used inside of `<text>` elements. Text between the opening and closing tag is rendered on the page.
 All other tags close themselves, in the format `<[TAG] [PROPERTIES] />`.
 
@@ -32,7 +32,7 @@ All other tags close themselves, in the format `<[TAG] [PROPERTIES] />`.
 To create a new file, you need to start with the following document setup:
 
 ```
-<ntml>
+<swml>
 	<head>
 		 title=""
 		 info=""
@@ -47,7 +47,7 @@ To create a new file, you need to start with the following document setup:
 </>
 ```
 
-From there, feel free to adjust the metadata in `<head>` and add child elements to `<page>`! Page files are saved with the extension `.ntml` (to be changed).
+From there, feel free to adjust the metadata in `<head>` and add child elements to `<page>`! Page files are saved with the extension `.swml`.
 
 #### Element properties
 Element properties are crucial to having a hip webpage! Properties can be added by simply adding them in the format `[PROPERTY_NAME]=[VALUE]` after the tag type in the opening tag. The following properties are able to be used for styling elements, with some affecting only particular elements.
@@ -173,12 +173,12 @@ Sample elements:
 
 ```
 <page bg_color=#c38b61ff>
-	<text font_size=40px>Max's Website</>
+	<text font_size=40px>Helloworld's Website</>
 	<box bg_color=#eeb585ff>
 		<text font=philosopher>This is my marginally bigger textbox.</>
 		<text font=philosopher font_size=12px>Another set of words!</>
 	</>
-	<img file="desktop/dr_gerber.viz" size=409px409px/>
+	<img file="desktop/myimage.viz" size=409px409px/>
 </>
 ```
 
