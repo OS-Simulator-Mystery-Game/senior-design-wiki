@@ -1,0 +1,66 @@
+---
+title: Activity Diagram - Desktop Boot and Initialization
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+%% Activity: Desktop Boot and Initialization
+
+Start([Game Starts]):::startEnd
+
+Start --> InitGlobals[Initialize GameGlobals autoload]:::process
+InitGlobals --> LimitFPS[Limit FPS to 60]:::process
+LimitFPS --> CheckSoundManager{SoundManager exists?}:::decision
+CheckSoundManager -->|No| CreateSoundManager[Instantiate SoundManager]:::process
+CheckSoundManager -->|Yes| SkipSound[Continue]:::process
+
+CreateSoundManager --> InitOSManager
+SkipSound --> InitOSManager[Initialize OSManager autoload]:::process
+
+InitOSManager --> HideSystemCursor[Hide OS system mouse cursor]:::process
+HideSystemCursor --> CheckMouse{Mouse object exists?}:::decision
+CheckMouse -->|No| CreateMouse[Instantiate Mouse sprite]:::process
+CheckMouse -->|Yes| SkipMouse[Continue]:::process
+
+CreateMouse --> SetupMouseSM
+SkipMouse --> SetupMouseSM[Create MouseStateMachine for Mouse]:::process
+
+SetupMouseSM --> LoadDesktopScene[Load desktop.tscn scene]:::process
+LoadDesktopScene --> InitDesktopManager[DesktopManager._ready called]:::process
+InitDesktopManager --> RegisterWithGlobals[Register self with OSManager and GameGlobals]:::process
+
+RegisterWithGlobals --> ShowBootOverlay[Display boot_overlay panel at full opacity]:::process
+ShowBootOverlay --> CallLoadDesktop[DesktopManager.load_desktop called]:::process
+
+CallLoadDesktop --> ClearDesktop[Clear existing desktop_file_icons array]:::process
+ClearDesktop --> GetDesktopPath[Build path to /Desktop directory]:::process
+GetDesktopPath --> LoadDirFiles[OSManager.load_directory called for Desktop]:::process
+LoadDirFiles --> ParseFiles[Parse returned File and String objects]:::process
+
+ParseFiles --> ForEachFile[For each File in directory]:::process
+ForEachFile --> InstantiateIcon[Instantiate FileIcon from prefab]:::process
+InstantiateIcon --> SetupIcon[FileIcon.setup with File object]:::process
+SetupIcon --> AddIconToArray[Add FileIcon to desktop_file_icons]:::process
+AddIconToArray --> AddIconToScene[Add FileIcon as child to desktop Control]:::process
+AddIconToScene --> NextFile{More files?}:::decision
+NextFile -->|Yes| ForEachFile
+NextFile -->|No| OrganizeIcons
+
+OrganizeIcons[DesktopManager.organize called]:::process
+OrganizeIcons --> CalculateGrid[Calculate grid positions based on icon sizes]:::process
+CalculateGrid --> PositionIcons[Position each FileIcon in grid]:::process
+
+PositionIcons --> StartFadeOut[Create Tween for boot_overlay]:::process
+StartFadeOut --> TweenDither[Tween dither shader progress from 0 to 1]:::process
+TweenDither --> WaitFadeComplete[Wait for fade animation complete]:::process
+WaitFadeComplete --> HideOverlay[Hide boot_overlay]:::process
+
+HideOverlay --> EnableInput[Enable player input]:::process
+EnableInput --> StartIdleTimer[GameGlobals starts idle_timer]:::process
+StartIdleTimer --> StartPhysicsLoop[Begin _physics_process loop]:::process
+StartPhysicsLoop --> MonitorCommandQueue[OSManager monitors system_commands queue]:::process
+
+MonitorCommandQueue --> End([Desktop Ready]):::startEnd

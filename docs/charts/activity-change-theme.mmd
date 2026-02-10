@@ -1,0 +1,64 @@
+---
+title: Activity Diagram - Changing Window/Mouse Theme
+---
+flowchart TD
+
+classDef startEnd fill:#d4edda,stroke:#28a745,stroke-width:2px;
+classDef process fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px;
+classDef decision fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+%% Activity: Changing System Theme
+
+Start([Player Executes Theme Change Command]):::startEnd
+
+Start --> ParseCommand[Terminal parses theme command]:::process
+ParseCommand --> CreateCommand[Create SystemCommand with CHANGE_THEME type]:::process
+CreateCommand --> IssueCommand[OSManager.issue_command with new theme parameters]:::process
+IssueCommand --> AddToQueue[Add to system_commands queue]:::process
+
+AddToQueue --> WaitPhysics[Wait for _physics_process]:::process
+WaitPhysics --> DequeueCommand[OSManager dequeues command]:::process
+DequeueCommand --> ExecuteCommand[SystemCommand.execute called]:::process
+
+ExecuteCommand --> ParseThemeParams[Parse theme parameters window/mouse]:::process
+ParseThemeParams --> CallUpdateTheme[OSManager.update_theme called]:::process
+
+CallUpdateTheme --> CheckWindowTheme{Window theme changed?}:::decision
+CheckWindowTheme -->|Yes| UpdateWindowThemeVar[Update OSManager.window_theme]:::process
+CheckWindowTheme -->|No| CheckMouseTheme
+
+UpdateWindowThemeVar --> EmitWindowSignal[Emit window_theme_changed signal]:::process
+EmitWindowSignal --> CheckMouseTheme{Mouse theme changed?}:::decision
+
+CheckMouseTheme -->|Yes| UpdateMouseThemeVar[Update OSManager.mouse_theme]:::process
+CheckMouseTheme -->|No| SendConfirm
+
+UpdateMouseThemeVar --> EmitMouseSignal[Emit mouse_theme_changed signal]:::process
+
+%% Window theme update flow
+EmitWindowSignal --> AllAppsListen[All Application instances listen to signal]:::process
+AllAppsListen --> ForEachApp[For each Application]:::process
+ForEachApp --> CallAppUpdate[Application.update_theme called]:::process
+CallAppUpdate --> DetermineNewTheme[Determine new ApplicationWindow prefab]:::process
+DetermineNewTheme --> InstantiateNewWindow[Instantiate new themed ApplicationWindow]:::process
+InstantiateNewWindow --> CopyProperties[Copy size, position, title, icon from old window]:::process
+CopyProperties --> CopyFocusState[Copy focus state]:::process
+CopyFocusState --> ReparentApp[Reparent Application to new window]:::process
+ReparentApp --> LinkTaskbar[Connect new window to TaskbarApplication]:::process
+LinkTaskbar --> FreeOldWindow[queue_free old ApplicationWindow]:::process
+FreeOldWindow --> NextApp{More applications?}:::decision
+NextApp -->|Yes| ForEachApp
+NextApp -->|No| WindowUpdateComplete
+
+%% Mouse theme update flow
+EmitMouseSignal --> MouseListen[Mouse listens to signal]:::process
+MouseListen --> MouseUpdate[Mouse.update_theme called]:::process
+MouseUpdate --> LoadNewSprite[Load new mouse cursor spritesheet from GameGlobals]:::process
+LoadNewSprite --> UpdateMouseTexture[Update Mouse.texture]:::process
+UpdateMouseTexture --> UpdateTrails[Update all active MouseTrail textures]:::process
+UpdateTrails --> MouseUpdateComplete[Mouse theme updated]:::process
+
+WindowUpdateComplete --> SendConfirm
+MouseUpdateComplete --> SendConfirm[Send confirmation message to caller Terminal]:::process
+
+SendConfirm --> End([Theme Changed]):::startEnd

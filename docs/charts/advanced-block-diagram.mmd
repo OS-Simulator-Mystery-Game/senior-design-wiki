@@ -1,0 +1,126 @@
+---
+title: Advanced Block Diagram
+---
+%%{init: {'flowchart': {'nodeSpacing': 50, 'rankSpacing': 50, 'curve': 'basis'}} }%%
+flowchart TB
+
+subgraph Diagram[" "]
+    direction TB
+
+    subgraph DetailedView[" Class Relationships Block Diagram "]
+        direction TB
+    
+    %% Globals Layer
+    subgraph GlobalsLayer[" Globals Layer "]
+        OSManager2["OSManager"]:::global
+        GameGlobals2["GameGlobals"]:::global
+        SoundManager2["SoundManager"]:::global
+    end
+    
+    %% Command Queue
+    SystemCommand2["SystemCommand<br/>(Command Queue)"]:::command
+    
+    %% Desktop Layer
+    subgraph DesktopLayer[" Desktop Layer "]
+        DesktopManager2["DesktopManager"]:::desktop
+        FileIcon2["FileIcon"]:::desktop
+        DesktopElement2["DesktopElement"]:::desktop
+        TaskbarApplication2["TaskbarApplication"]:::desktop
+    end
+    
+    %% Input Layer
+    subgraph InputLayer[" Input Layer "]
+        Mouse2["Mouse"]:::input
+        MouseStateMachine2["MouseStateMachine"]:::input
+        MouseTrail2["MouseTrail"]:::input
+    end
+    
+    %% Application Framework
+    subgraph AppFramework[" Application Framework "]
+        Application2["Application"]:::app
+        ApplicationWindow2["ApplicationWindow"]:::app
+    end
+    
+    %% Filesystem
+    File2["File"]:::fs
+    
+    %% StateMachine (placed separately for better layout)
+    StateMachine2["StateMachine"]:::app
+    
+    %% Assets & Resources
+    Assets2[("<b>Assets & Prefabs:</b><br/>Fonts, Sprites,<br/>Sounds, Themes")]:::assets
+    
+    %% Core Dependencies
+    OSManager2 --> SystemCommand2
+    OSManager2 --> DesktopManager2
+    OSManager2 --> GameGlobals2
+    GameGlobals2 --> SoundManager2
+    SystemCommand2 --> DesktopManager2
+    SystemCommand2 --> Application2
+    
+    %% Desktop interactions
+    DesktopManager2 --> FileIcon2
+    DesktopManager2 --> DesktopElement2
+    DesktopManager2 --> TaskbarApplication2
+    DesktopManager2 --> SystemCommand2
+    DesktopManager2 --> File2
+    FileIcon2 --> File2
+    DesktopElement2 --> File2
+    
+    %% Application interactions
+    Application2 --> ApplicationWindow2
+    Application2 --> SystemCommand2
+    ApplicationWindow2 --> Mouse2
+    ApplicationWindow2 --> File2
+    ApplicationWindow2 --> SystemCommand2
+    ApplicationWindow2 --> MouseStateMachine2
+    
+    %% Input connections
+    Mouse2 --> MouseStateMachine2
+    Mouse2 --> MouseTrail2
+    DesktopManager2 --> Mouse2
+    Application2 --> Mouse2
+    
+    %% Asset consumption indication (no edges)
+    %% Dashed borders mark specific nodes that consume assets
+    style DesktopManager2 stroke-dasharray: 5 5,stroke:#999
+    style Application2 stroke-dasharray: 5 5,stroke:#999
+    style ApplicationWindow2 stroke-dasharray: 5 5,stroke:#999
+    style Mouse2 stroke-dasharray: 5 5,stroke:#999
+    style File2 stroke-dasharray: 5 5,stroke:#999
+    style SoundManager2 stroke-dasharray: 5 5,stroke:#999
+    
+    %% Inheritance (dotted)
+    TaskbarApplication2 -.->|inherits| Application2
+    MouseStateMachine2 -.->|inherits| StateMachine2
+    
+    end
+
+    %% Legend (kept separate but guaranteed below by Diagram stacking)
+    subgraph LegendBox[" Legend "]
+        direction TB
+        LegendSolid["<b>Solid line</b>:<br/>dependency / method calls"]
+        LegendDotted["<b>Dotted line</b>:<br/>inheritance"]
+        LegendDashedBorder["<b>Dashed border</b>:<br/>node consumes assets<br/>(fonts, sprites,<br/>sounds, themes)"]
+        LegendAssetsShape[("<b>Cylinder node</b>:<br/>'Assets & Prefabs'<br/>global repository;<br/>edges omitted for clarity")]
+    end
+end
+
+%% Style classes
+classDef global fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+classDef command fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+classDef desktop fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+classDef app fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
+classDef input fill:#fce4ec,stroke:#c2185b,stroke-width:2px;
+classDef fs fill:#fff9c4,stroke:#f9a825,stroke-width:2px;
+classDef assets fill:#f5f5f5,stroke:#757575,stroke-width:1px,stroke-dasharray: 5 5;
+ 
+style LegendBox fill:#ffffff,stroke:#555,stroke-width:1px
+style Diagram fill:#ffffff,stroke:#555,stroke-width:1px
+style LegendSolid stroke-dasharray:0,stroke:#333
+style LegendDotted stroke-dasharray:2 3,stroke:#333
+style LegendDashedBorder stroke-dasharray:6 4,stroke:#333
+style LegendAssetsShape stroke:#333,stroke-width:1px,fill:#fff
+%% Invisible anchor edge (styled transparent) to keep legend below without visible arrow
+DetailedView --> LegendBox
+linkStyle 25 stroke-width:0px,stroke:transparent,fill:none,opacity:0
